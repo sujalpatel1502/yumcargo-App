@@ -22,10 +22,12 @@ target 'yumcargoapp' do
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
+  pod 'MMKV'
 
   target 'yumcargoappTests' do
     inherit! :complete
     # Pods for testing
+    
   end
 
   post_install do |installer|

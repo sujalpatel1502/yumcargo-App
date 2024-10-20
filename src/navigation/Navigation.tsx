@@ -1,11 +1,37 @@
 import { View, Text } from 'react-native'
-import React from 'react'
+import React, { FC } from 'react'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import { NavigationContainer } from '@react-navigation/native'
+import SplashScreen from '@features/auth/SplashScreen'
+import { navigationRef } from '@utils/NavigationUtils'
+import DeliveryLogin from '@features/auth/DeliveryLogin'
+import CustomerLogin from '@features/auth/CustomerLogin'
 
-const Navigation = () => {
+const Stack=createNativeStackNavigator()
+
+const Navigation:FC = () => {
   return (
-    <View style={{backgroundColor:"red"}}>
-      <Text>Navigation</Text>
-    </View>
+    <NavigationContainer ref={navigationRef}>
+      <Stack.Navigator
+      initialRouteName='SplashScreen'
+      screenOptions={{
+        headerShown:false
+      }}
+      >
+        <Stack.Screen name='SplashScreen' component={SplashScreen}/>
+        <Stack.Screen
+        options={{
+          animation:'fade'
+        }}
+        name='DeliveryLogin' component={DeliveryLogin}/>
+        <Stack.Screen
+        options={{
+          animation:'fade'
+        }}
+        name='CustomerLogin' component={CustomerLogin}/>
+
+      </Stack.Navigator>
+    </NavigationContainer>
   )
 }
 

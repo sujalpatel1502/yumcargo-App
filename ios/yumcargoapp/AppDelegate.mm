@@ -1,6 +1,7 @@
 #import "AppDelegate.h"
 
 #import <React/RCTBundleURLProvider.h>
+#import <MMKV/MMKV.h>
 
 @implementation AppDelegate
 
@@ -10,6 +11,8 @@
   // You can add your custom initial props in the dictionary below.
   // They will be passed down to the ViewController used by React Native.
   self.initialProps = @{};
+
+  [MMKV initializeMMKV:nil];
 
   return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
