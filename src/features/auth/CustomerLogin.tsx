@@ -1,18 +1,25 @@
-import { View, Text, StyleSheet, Animated, Image } from 'react-native'
-import React, { FC, useState } from 'react'
+import { View, Text, StyleSheet, Animated, Image, SafeAreaView, Keyboard, Alert } from 'react-native'
+import React, { FC, useEffect, useRef, useState } from 'react'
 import { GestureHandlerRootView, PanGestureHandler, State } from 'react-native-gesture-handler'
 import CustomSafeAreaView from '@components/global/CustomSafeAreaView'
 import ProductSlider from '@components/login/ProductSlider'
 import { resetAndNavigate } from '@utils/NavigationUtils'
 import CustomText from '@components/ui/CustomText'
-import { Fonts } from '@utils/Constants'
+import { Colors, Fonts } from '@utils/Constants'
 import CustomInput from '@components/ui/CustomInput'
+import CustomButton from '@components/ui/CustomButton'
+import useKeyboardOffsetHeight from '@utils/useKeyBoardOffestHeight'
+import { RFValue } from 'react-native-responsive-fontsize'
+import { customerLogin } from '@service/authService'
+
 
 const CustomerLogin:FC = () => {
     const [phoneNumber,setPhoneNumber]=useState('');
-    const [loading,setLoading]=useState('')
+    const [loading,setLoading]=useState(false)
 
     const [gestureSequence,setGestureSequence]=useState<string []>([])
+
+    const keyboardOffsetHeight = useKeyboardOffsetHeight();
 
     const handleGesture=({nativeEvent}:any)=>{
         if(nativeEvent.state === State.END){
@@ -34,6 +41,38 @@ const CustomerLogin:FC = () => {
             }
         }
     }
+
+    const animatedValue=useRef(new Animated.Value(0)).current
+
+    useEffect(()=>{
+        if(keyboardOffsetHeight==0){
+            Animated.timing(animatedValue,{
+                toValue:0,
+                duration:500,
+                useNativeDriver:true
+            }).start()
+        }else{
+            Animated.timing(animatedValue,{
+                toValue:-keyboardOffsetHeight *0.84,
+                duration:1000,
+                useNativeDriver:true
+        }).start()
+    }
+    },[keyboardOffsetHeight])
+
+    const handleAuth=async()=>{
+        Keyboard.dismiss();
+        setLoading(true)
+        try {
+            await customerLogin(phoneNumber)
+            resetAndNavigate('ProductDashboard')
+        } catch (error) {
+            Alert.alert("Login Failed")
+        }finally{
+            setLoading(false)
+        }
+
+    }
   return (
     <GestureHandlerRootView
     style={styles.container}
@@ -47,6 +86,7 @@ const CustomerLogin:FC = () => {
                 keyboardDismissMode="on-drag"
                 keyboardShouldPersistTaps='handled'
                 contentContainerStyle={styles.subContainer}
+                style={{transform:[{translateY:animatedValue}]}}
                 >
                     <View style={styles.content}>
                         <Image source={require('@assets/images/logo.png')} style={styles.logo}/>
@@ -67,12 +107,28 @@ const CustomerLogin:FC = () => {
                         placeholder='Enter mobile number'
                         inputMode='numeric'
                         />
+                        <CustomButton
+                        disabled={phoneNumber?.length!=10}
+                        onPress={()=>{handleAuth()}}
+                        loading={loading}
+                        title='continue'/>
                     </View>
 
 
                 </Animated.ScrollView>
             </PanGestureHandler>
             </CustomSafeAreaView>
+
+
+            <View style={styles.footer}>
+                <SafeAreaView>
+                    <CustomText fontSize={RFValue(6)}>
+
+                        By Continuing you agree to our terms
+                    </CustomText>
+                </SafeAreaView>
+
+            </View>
         
         </View>
       
@@ -110,6 +166,19 @@ const styles=StyleSheet.create({
         paddingBottom:20,
         position:"absolute",
         bottom:10
+    },
+    footer:{
+        borderTopWidth:0.8,
+        borderColor:Colors.border,
+        paddingBottom:10,
+        zIndex:22,
+        position:"absolute",
+        bottom:0,
+        justifyContent:"center",
+        alignItems:"center",
+        padding:10,
+        backgroundColor:"#f8f9fc",
+        width:"100%"
     }
 })
 
