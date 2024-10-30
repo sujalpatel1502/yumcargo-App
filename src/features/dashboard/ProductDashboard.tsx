@@ -13,9 +13,17 @@ import { RFValue } from 'react-native-responsive-fontsize'
 import { Fonts } from '@utils/Constants'
 import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated'
 import  Icon  from 'react-native-vector-icons/Ionicons'
+import withCart from '@features/cart/WithCart'
+import { replace } from '@utils/NavigationUtils'
+import withLiveStatus from '@features/map/withLiveStatus'
 
 const ProductDashboard:FC = () => {
-
+//   useEffect(()=>{
+//     const timeoutId=setTimeout(()=>{
+//         replace("LiveTracking")
+//     },2300)
+//     return ()=>clearTimeout(timeoutId)
+// },[])
 
   const{scrollY,expand}=useCollapsibleContext()
   const previousScroll=useRef<number>(0)
@@ -145,4 +153,4 @@ const styles=StyleSheet.create({
   }
 })
 
-export default withCollapsibleContext(ProductDashboard)
+export default withLiveStatus(withCart(withCollapsibleContext(ProductDashboard)))

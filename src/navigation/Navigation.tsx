@@ -8,6 +8,11 @@ import DeliveryLogin from '@features/auth/DeliveryLogin'
 import CustomerLogin from '@features/auth/CustomerLogin'
 import ProductDashboard from '@features/dashboard/ProductDashboard'
 import DeliveryDashboard from '@features/delivery/DeliveryDashboard'
+import ProductCategories from '@features/category/ProductCategories'
+import ProductOrder from '@features/order/ProductOrder'
+import OrderSuccess from '@features/order/OrderSuccess'
+import LiveTracking from '@features/map/LiveTracking'
+import Profile from '@features/profile/Profile'
 
 const Stack=createNativeStackNavigator()
 
@@ -41,6 +46,31 @@ const Navigation:FC = () => {
           animation:'fade'
         }}
         name='DeliveryDashboard' component={DeliveryDashboard}/>
+        <Stack.Screen
+        options={{
+          animation:'fade'
+        }}
+        name='ProductCategories' component={ProductCategories}/>
+        <Stack.Screen
+        options={{
+          animation:'fade'
+        }}
+        name='ProductOrder' component={ProductOrder}/>
+        <Stack.Screen
+        options={{
+          animation:'fade'
+        }}
+        name='OrderSuccess' component={OrderSuccess}/>
+        <Stack.Screen
+        options={{
+          animation:'fade'
+        }}
+        name='LiveTracking' component={LiveTracking}/>
+        <Stack.Screen
+        options={{
+          animation:'fade'
+        }}
+        name='Profile' component={Profile}/>
 
       </Stack.Navigator>
     </NavigationContainer>

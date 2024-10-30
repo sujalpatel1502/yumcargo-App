@@ -3,7 +3,7 @@ import React, { FC, useEffect, useRef, useState } from 'react'
 import { GestureHandlerRootView, PanGestureHandler, State } from 'react-native-gesture-handler'
 import CustomSafeAreaView from '@components/global/CustomSafeAreaView'
 import ProductSlider from '@components/login/ProductSlider'
-import { resetAndNavigate } from '@utils/NavigationUtils'
+import { replace, resetAndNavigate } from '@utils/NavigationUtils'
 import CustomText from '@components/ui/CustomText'
 import { Colors, Fonts } from '@utils/Constants'
 import CustomInput from '@components/ui/CustomInput'
@@ -14,6 +14,7 @@ import { customerLogin } from '@service/authService'
 
 
 const CustomerLogin:FC = () => {
+
     const [phoneNumber,setPhoneNumber]=useState('');
     const [loading,setLoading]=useState(false)
 
